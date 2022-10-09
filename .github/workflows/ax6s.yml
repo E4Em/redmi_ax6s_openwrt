@@ -29,17 +29,18 @@ jobs:
         run: |
           git clone https://git.openwrt.org/openwrt/openwrt.git&& cd openwrt&&git branch newBranch 17bd6b04777d71d081ddf4ff8fbf44ccaf6f422e &&git checkout newBranch
       - name: 更新软件包
-        run: ./scripts/feeds update -a
+        run: cd openwrt&&./scripts/feeds update -a
       - name: 安装所有包
-        run: ./scripts/feeds install -a
+        run: cd openwrt&&./scripts/feeds install -a
       - name: 进行编译配置
-        run: cp -a ../ax6s.config .config&&make defconfig
+        run: cd openwrt&&cp -a ../ax6s.config .config&&make defconfig
       - name: 下载依赖
-        run: make download -j$(nproc) V=s
+        run: cd openwrt&&make download -j$(nproc) V=s
       - name: 编译固件
-        run: make -j$(nproc) V=s
+        run: cd openwrt&&make -j$(nproc) V=s
       - name: Upload firmware to WeTransfer
         run: |
+          cd openwrt
           curl -fsSL git.io/file-transfer | sh
           ./transfer -s -p ${FIRMWARE} 
         
