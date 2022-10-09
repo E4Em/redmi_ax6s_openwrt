@@ -38,7 +38,9 @@ jobs:
         run: git clone https://git.openwrt.org/openwrt/openwrt.git&&cd openwrt&&git checkout v22.03.0-rc6
       - name: 添加helloworld
         if: (github.event.inputs.ssr == 'true' && github.event.inputs.ssr  != 'false') || contains(github.event.action, 'ssr')
-        run: cd openwrt&&echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+        run: |
+          chmod +x ssr.sh
+          cd openwrt&&echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
       - name: 安装所有包
