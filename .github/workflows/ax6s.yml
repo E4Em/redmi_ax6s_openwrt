@@ -25,9 +25,8 @@ jobs:
           echo $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)
 
       # Runs a set of commands using the runners shell
-      - name: 克隆openwrt,回退至v22.03.0
-        run: |
-          git clone https://git.openwrt.org/openwrt/openwrt.git&& cd openwrt&&git branch newBranch 17bd6b04777d71d081ddf4ff8fbf44ccaf6f422e &&git checkout newBranch
+      - name: 克隆openwrt_v22.03.0
+        run: git clone https://git.openwrt.org/openwrt/openwrt.git^17bd6b04777d71d081ddf4ff8fbf44ccaf6f422e
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
       - name: 修复安装包少的三个依赖
