@@ -11,10 +11,6 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
-      fix:
-        description: '缺少依赖修复用'
-        required: false
-        default: 'false'
       ssr:
         description: '是否添加酸酸乳'
         required: false
