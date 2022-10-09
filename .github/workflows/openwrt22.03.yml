@@ -63,11 +63,8 @@ jobs:
             echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
       - name: Upload firmware to WeTransfer
         run: |
+          cd openwrt
+          zip -q -r OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip bin
           curl -fsSL git.io/file-transfer | sh
-          ./transfer -s -p openwrt/bin
-      - name: Upload bin directory
-        uses: actions/upload-artifact@main
-        #if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-        with:
-          name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-          path: openwrt/bin
+          ./transfer -s -p OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip
+
