@@ -41,10 +41,10 @@ jobs:
         run: cd openwrt&&echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
-      - name: 修复未缺少的依赖
-        run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
       - name: 安装所有包
         run: cd openwrt&&./scripts/feeds install -a
+      - name: 修复未缺少的依赖
+        run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
       - name: SSH connection to Actions
         uses: P3TERX/ssh2actions@v1.0.0
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
