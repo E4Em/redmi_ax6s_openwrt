@@ -26,11 +26,11 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: 克隆openwrt_v22.03.0
-        run: git clone https://git.openwrt.org/openwrt/openwrt.git^f27fbb509b76e4fc3c4259352bb58c91c20a443e
+        run: git clone https://git.openwrt.org/openwrt/openwrt.git&&git checkout v22.03.0-rc6
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
-      - name: 修复安装包少的三个依赖
-        run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
+    #  - name: 修复安装包少的三个依赖
+    #    run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
       - name: 安装所有包
         run: cd openwrt&&./scripts/feeds install -a
       - name: 进行编译配置
