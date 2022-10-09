@@ -40,8 +40,8 @@ jobs:
         if: (github.event.inputs.ssr == 'true' && github.event.inputs.ssr  != 'false') || contains(github.event.action, 'ssr')
         run: |
           chmod +x ssr.sh
+          ssr.sh
           cd openwrt&&echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-          ./scripts/feeds install libpam liblzma libnetsnmp
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
       - name: 安装所有包
