@@ -26,7 +26,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: 克隆openwrt_v22.03.0
-        run: git clone https://git.openwrt.org/openwrt/openwrt.git^17bd6b04777d71d081ddf4ff8fbf44ccaf6f422e
+        run: git clone https://git.openwrt.org/openwrt/openwrt.git^f27fbb509b76e4fc3c4259352bb58c91c20a443e
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
       - name: 修复安装包少的三个依赖
