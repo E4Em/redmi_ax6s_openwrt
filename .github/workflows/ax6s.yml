@@ -27,30 +27,32 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
       - name: 查询CPU信息
         run: |
           echo $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c)
-
-      # Runs a set of commands using the runners shell
       - name: 克隆openwrt_v22.03.0
         run: git clone https://git.openwrt.org/openwrt/openwrt.git&&cd openwrt&&git checkout v22.03.0-rc6
+      - name: 复制config
+        run: cd openwrt&&cp -a ../ax6s.config .config
       - name: 添加helloworld
         if: (github.event.inputs.ssr == 'true' && github.event.inputs.ssr  != 'false') || contains(github.event.action, 'ssr')
         run: |
+          cd openwrt
           echo 'CONFIG_PACKAGE_luci-app-ssr-plus=y' >>.config
-          cd openwrt&&echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+          echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+          #官方用ssr需要这几个依赖
           mkdir -p package/helloworld
           for i in "dns2socks" "microsocks" "ipt2socks" "pdnsd-alt" "redsocks2"; do \
             svn checkout "https://github.com/coolsnowwolf/packages/trunk/net/$i" "package/helloworld/$i"; \
           done
       - name: 更新软件包
         run: cd openwrt&&./scripts/feeds update -a
+        
+      - name: 这几个包需要单独安装
+        run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
+        
       - name: 安装所有包
         run: cd openwrt&&./scripts/feeds install -a
-      - name: 安装缺失的包
-        run: cd openwrt&&./scripts/feeds install libpam liblzma libnetsnmp
         
       - name: SSH connection to Actions
         uses: P3TERX/ssh2actions@v1.0.0
@@ -60,7 +62,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           
       - name: 进行编译配置
-        run: cd openwrt&&cp -a ../ax6s.config .config&&make defconfig
+        run: cd openwrt&&make defconfig
       - name: 下载第三方依赖
         run:  cd openwrt&&make download -j$(nproc) V=s
         
