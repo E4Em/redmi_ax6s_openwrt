@@ -77,4 +77,8 @@ jobs:
           zip -q -r OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip bin
           curl -fsSL git.io/file-transfer | sh
           ./transfer -s -p OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.zip
-     
+      - name: Upload firmware directory
+        uses: actions/upload-artifact@master
+        with:
+          name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+          path: openwrt/bin
